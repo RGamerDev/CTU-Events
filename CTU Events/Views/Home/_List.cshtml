@@ -1,0 +1,12 @@
+﻿@model List<CTU_Events.Models.Event>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@Html.ActionLink(item.Title, "Index", new { @id = item.id})</li>
+    }
+</ul>

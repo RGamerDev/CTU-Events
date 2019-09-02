@@ -5,36 +5,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CTU_Events.Models;
+using CTU_Events.Data;
 
 namespace CTU_Events.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        EventsContext context;
+
+        public HomeController()
         {
-            return View();
+            context = new EventsContext();
         }
 
-        public IActionResult About()
+        public IActionResult Index(int id)
+        {
+            ViewBag.Current = context.Events[id];
+            return PartialView(context.Events);
+        }
+
+        public IActionResult Language()
         {
             ViewData["Message"] = "Your application description page.";
 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult _List()
         {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            return PartialView();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

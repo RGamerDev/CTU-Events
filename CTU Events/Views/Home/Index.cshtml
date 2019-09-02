@@ -1,12 +1,11 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model List<CTU_Events.Models.Event>
 @* Colors: light green , bright Green #86C232, black #222629, Lighter #474B4F, lightest #6B6E70 *@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>CTU Events</title>
     <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet">
     <script async src="https://static.addtoany.com/menu/page.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
     <style>
@@ -25,12 +24,14 @@
             margin-right: 8px;
         }
 
+
+
         nav > ul {
             list-style-type: none;
             padding-left: 0;
         }
 
-        li {
+        nav > ul > li {
             display: inline;
         }
 
@@ -41,41 +42,31 @@
 
         div {
             border: 5px solid #61892F;
-            display: inline-block;
+            display: flex;
             padding: 10px;
             margin-left: 8px;
             margin-top: 8px;
         }
 
-        #FilterBar {
-            width: 97.5%;
+        .Content{
+            width:31%;
+            height:35%;
+            display: inline-grid;
         }
 
-        #FavouriteList {
-            width: 23%;
-            height: 35%;
+        #Information{
+            display:normal;
+            position:relative;
+            top:-292px;
         }
 
-        #List {
-            width: 23%;
-            height: 35%;
-        }
-
-        #Picture {
-            width: 47%;
-            height: 35%;
-        }
-
-        #SocialMedia {
-            width: 23%;
-            height: 35%;
-        }
-
-        #Information {
-            width: 47%;
-            height: 35%;
-        }
     </style>
+
+    <script>
+        function Add() {
+            $("#FavList").append("<li>Added</li>");
+        }
+    </script>
 
     <header>
         <nav>
@@ -91,57 +82,66 @@
     </header>
 
     <div id="FilterBar">
-        <span style="float:left">Filter Bar</span>
+        <span style="position:absolute;left:20px">Filter Bar</span>
 
-        <label for="Order">Order</label>
-        <select name="Order">
-            <option>Ascending</option>
-            <option>Descending</option>
-        </select>
+        <span style="position:relative;left:42%;">
+            <label for="Order" style="position:relative;left:10px;">Order</label>
+            <select name="Order" style="position:relative;left:10px;">
+                <option>Ascending</option>
+                <option>Descending</option>
+            </select>
 
-        <label for="Category">Category</label>
-        <select name="Category">
-            <option>Upcoming</option>
-            <option>Finished</option>
-        </select>
+            <label for="Category" style="position:relative;left:10px;">Category</label>
+            <select name="Category" style="position:relative;left:10px;">
+                <option>All</option>
+                <option>Near Me</option>
+            </select>
+        </span>
 
-        <input type="search" style="float:right" />
+        <input type="search" style="position:absolute;right:10px;" />
     </div>
 
-    <div id="FavouriteList">
+    <div class="Content" id="FavouriteList">
         <h1>FavouriteList</h1>
-
-        @*await Html.RenderPartialAsync()*@
-
+        <ul id="FavList"></ul>
     </div>
 
-    <div id="List">
+    <div class="Content" id="List">
         <h1>List</h1>
-
-        @*@await Html.RenderPartialAsync()*@
+        <p>@Html.Partial("_List", Model)</p>
 
     </div>
 
-    <div id="Picture">
+    <div class="Content" id="Picture">
         <h1>Picture</h1>
+        <img src="@ViewBag.Current.Image" alt="@ViewBag.Current.Title" style="position:relative;left:25%;"/>
     </div>
 
-    <div id="share" class="a2a_kit a2a_kit_size_32 a2a_default_style">
-        <h1>SocialMedia</h1>
+    <div class="Content" id="SocialMedia"></div>
 
-        <!-- Social media buttons BEGIN -->
-        <div id="share" class="a2a_kit a2a_kit_size_32 a2a_default_style" style="border:none">
-            <a class="a2a_dd" href="https://www.w3schools.com/jsref/prop_node_previoussibling.asp"></a>
-            <a class="a2a_button_facebook"></a>
-            <a class="a2a_button_twitter"></a>
-            <a class="a2a_button_email"></a>
-        </div>
-        
-        <!-- Social media buttons END -->
-    </div>
+    @*<div id="share" class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <h1>SocialMedia</h1>
 
-    <div id="Information">
+             Social media buttons BEGIN
+            <div id="share" class="a2a_kit a2a_kit_size_32 a2a_default_style" style="border:none">
+                <a class="a2a_dd" href="https://www.w3schools.com/jsref/prop_node_previoussibling.asp"></a>
+                <a class="a2a_button_facebook"></a>
+                <a class="a2a_button_twitter"></a>
+                <a class="a2a_button_email"></a>
+            </div>
+
+             Social media buttons END
+        </div>*@
+
+    <div class="Content" id="Information">
         <h1>Information</h1>
+        @ViewBag.Current.Description
+        <p>
+            For more information click <a href="@ViewBag.Current.Link">here</a>.
+            <br />
+            To add event to favourites, click <a href="" onclick="Add()">here</a>.
+        </p>
+
     </div>
 
 </body>
