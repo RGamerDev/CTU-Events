@@ -1,8 +1,9 @@
-﻿@model List<CTU_Events.Models.Event>
-@* Colors: light green , bright Green #86C232, black #222629, Lighter #474B4F, lightest #6B6E70 *@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+@* Colors: light green #61892F, bright Green #86C232, black #222629, Lighter #474B4F, lightest #6B6E70 *@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>CTU Events</title>
+    <title>@_localizer["CTU Events"]</title>
     <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet">
     <script async src="https://static.addtoany.com/menu/page.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -24,8 +25,6 @@
             margin-right: 8px;
         }
 
-
-
         nav > ul {
             list-style-type: none;
             padding-left: 0;
@@ -40,89 +39,111 @@
             color: #86C232;
         }
 
-        div {
+        span {
+            color: #86C232;
+        }
+
+        span:hover {
+            cursor: pointer;
+        }
+
+        .Content {
+            width: 31%;
+            height: 35%;
+            display: inline-grid;
             border: 5px solid #61892F;
-            display: flex;
             padding: 10px;
             margin-left: 8px;
             margin-top: 8px;
         }
 
-        .Content{
-            width:31%;
-            height:35%;
-            display: inline-grid;
+        #Information {
+            display: normal;
+            position: absolute;
+            top: 57%;
         }
 
-        #Information{
-            display:normal;
-            position:relative;
-            top:-292px;
+        #FilterBar {
+            margin: 8px 5px 8px 5px;
+            border: 5px solid #61892F;
+            padding: 0px;
         }
 
+        #Map {
+            position: absolute;
+            right: 20px;
+            width: 33%;
+            top: 57%;
+        }
     </style>
 
     <script>
         function Add() {
-            $("#FavList").append("<li>Added</li>");
+            $("#FavList").append("<li>@ViewBag.Current.Title</li>");
         }
     </script>
 
     <header>
         <nav>
-            <ul>
-                <li>@Html.ActionLink("Home", "Index")</li>
-                <li>@Html.ActionLink("Language", "Language")</li>
-            </ul>
-
             <h1>
-                <a>@Html.ActionLink("CTU Events", "Index")</a>
+                <a>@_localizer["CTU Events"]</a>
             </h1>
         </nav>
     </header>
 
     <div id="FilterBar">
-        <span style="position:absolute;left:20px">Filter Bar</span>
+        @_localizer["Filter Bar"]
 
-        <span style="position:relative;left:42%;">
-            <label for="Order" style="position:relative;left:10px;">Order</label>
-            <select name="Order" style="position:relative;left:10px;">
-                <option>Ascending</option>
-                <option>Descending</option>
-            </select>
+        <form method="get">
+            <span style="position:relative;left:42%;">
+                <label for="Order" style="position:relative;left:10px;">@_localizer["Order"]</label>
+                <select name="Order" style="position:relative;left:10px;">
+                    <option>@_localizer["Ascending"]</option>
+                    <option>@_localizer["Decending"]</option>
+                </select>
 
-            <label for="Category" style="position:relative;left:10px;">Category</label>
-            <select name="Category" style="position:relative;left:10px;">
-                <option>All</option>
-                <option>Near Me</option>
-            </select>
-        </span>
+                <label for="Category" style="position:relative;left:10px;">@_localizer["Category"]</label>
+                <select name="Category" style="position:relative;left:10px;">
+                    <option>@_localizer["All"]</option>
+                    <option>@_localizer["Near me"]</option>
+                </select>
 
-        <input type="search" style="position:absolute;right:10px;" />
+                <label for="culture" style="position:relative;left:10px;">@_localizer["Language"]</label>
+                <select name="culture" style="position:relative;left:10px;">
+                    <option value="en">@_localizer["English"]</option>
+                    <option value="fr">@_localizer["French"]</option>
+                </select>
+            </span>
+
+            <input type="text" name="searchstring" style="position:absolute;right:200px;" />
+            <input type="submit" value="@_localizer["Search"]" style="position:absolute;right:100px;" />
+        </form>
+
     </div>
 
     <div class="Content" id="FavouriteList">
-        <h1>FavouriteList</h1>
-        <ul id="FavList"></ul>
+        <h1 style="height:50px">@_localizer["Favouritelist"]</h1>
+        <ul id="FavList" style="height:auto"></ul>
+        @await Html.PartialAsync("_FavList", new List<string>())
+
     </div>
 
     <div class="Content" id="List">
-        <h1>List</h1>
-        <p>@Html.Partial("_List", Model)</p>
+        <h1 style="height:-50px">@_localizer["List"]</h1>
+        @await Html.PartialAsync("_List")
 
     </div>
 
     <div class="Content" id="Picture">
-        <h1>Picture</h1>
-        <img src="@ViewBag.Current.Image" alt="@ViewBag.Current.Title" style="position:relative;left:25%;"/>
+        <h1>@_localizer["Picture"]</h1>
+        <img src="@ViewBag.Current.Image" alt="@ViewBag.Current.Title" style="position:relative;left:25%;" />
     </div>
 
-    <div class="Content" id="SocialMedia"></div>
+    <div class="Content" id="SocialMedia" style="display:inline-grid">
+        <div id="share" class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <h1>@_localizer["SocialMedia"]</h1>
 
-    @*<div id="share" class="a2a_kit a2a_kit_size_32 a2a_default_style">
-            <h1>SocialMedia</h1>
-
-             Social media buttons BEGIN
+            @*Social media buttons BEGIN*@
             <div id="share" class="a2a_kit a2a_kit_size_32 a2a_default_style" style="border:none">
                 <a class="a2a_dd" href="https://www.w3schools.com/jsref/prop_node_previoussibling.asp"></a>
                 <a class="a2a_button_facebook"></a>
@@ -130,18 +151,25 @@
                 <a class="a2a_button_email"></a>
             </div>
 
-             Social media buttons END
-        </div>*@
+            @*Social media buttons END*@
+        </div>
+    </div>
+
+
 
     <div class="Content" id="Information">
-        <h1>Information</h1>
+        <h1>@_localizer["Information"]</h1>
         @ViewBag.Current.Description
-        <p>
-            For more information click <a href="@ViewBag.Current.Link">here</a>.
-            <br />
-            To add event to favourites, click <a href="" onclick="Add()">here</a>.
-        </p>
+    <p>
+        @_localizer["For more information"] <a href="@ViewBag.Current.Link">@_localizer["here"]</a>.
+        <br />
+        @_localizer["To add event to favourites, click"] <span onclick="Add()">@_localizer["here"]</span>.
+    </p>
 
+    </div>
+
+    <div id="Map">
+        <iframe src="https://www.google.com/maps/d/embed?mid=1zt737WnnN8dYNTmE7PDyiJA2tA9qgRST" width="640" height="480"></iframe>
     </div>
 
 </body>

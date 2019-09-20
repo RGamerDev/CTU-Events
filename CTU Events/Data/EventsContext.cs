@@ -38,6 +38,14 @@ namespace CTU_Events.Data
                     Image = "/Event pictures/3.jpg",
                     Link = "https://ctutraining.ac.za/upcoming-events/student-workshop-business-management-facility-2/"
                 },
+                new Event
+                {
+                    id = 3,
+                    Title = "2nd National Open Day",
+                    Description = "Full Time Studies Why wait until it’s too late? We all know the early bird catches ...",
+                    Image = "/Event pictures/4.jpg",
+                    Link = "https://ctutraining.ac.za/upcoming-events/2nd-national-open-day/"
+                },
             };
         }
     }

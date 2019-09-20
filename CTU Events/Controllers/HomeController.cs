@@ -6,35 +6,52 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CTU_Events.Models;
 using CTU_Events.Data;
+using Microsoft.Extensions.Localization;
 
 namespace CTU_Events.Controllers
 {
     public class HomeController : Controller
     {
         EventsContext context;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-        public HomeController()
+        public HomeController(IStringLocalizer<HomeController> localizer)
         {
             context = new EventsContext();
+            _localizer = localizer;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index(int id, string order, string searchstring)
         {
             ViewBag.Current = context.Events[id];
-            return PartialView(context.Events);
+            if (!string.IsNullOrEmpty(order))
+            {
+                switch (order)
+                {
+                    case "Ascending":
+                        context.Events.Sort();
+                        break;
+                    case "Descending":
+                        context.Events.Reverse();
+                        break;
+                } 
+            }
+
+            return View(context.Events);
         }
 
         public IActionResult Language()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = _localizer["Your application description page."];
 
             return View();
         }
 
-        public IActionResult _List()
-        {
-            return PartialView();
-        }
+        //public IActionResult Add(string title)
+        //{
+        //    context.events.Add(title);
+        //    return PartialView("_FavList", events);
+        //}
 
         public IActionResult Error()
         {
